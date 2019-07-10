@@ -15,5 +15,59 @@ CMD ["gcsfuse", "--foreground", "-o", "allow_other", "BUCKET-NAME", "/mnt"]
 Or for Kubernetes:
 
 ```yaml
-example to follow...
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: my-application
+  name: my-application
+spec:
+  selector:
+    matchLabels:
+      app: my-application
+  template:
+    metadata:
+      labels:
+        app: my-application
+    spec:
+      containers:
+      - image: gcr.io/..../application:version
+        imagePullPolicy: Always
+        name: application
+        volumeMounts:
+        - mountPath: /usr/src/redmine/files
+          mountPropagation: HostToContainer
+          name: web-data
+      - command:
+        - gcsfuse
+        - --foreground
+        - -o
+        - allow_other
+        - BUCKET-NAME
+        - /mnt
+        image: gcr.io/..../gcsfuse-docker:version
+        imagePullPolicy: Always
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - umount
+              - /mnt
+        name: sidecar-gcsfuse
+        resources:
+          requests:
+            cpu: 10m
+        securityContext:
+          capabilities:
+            add:
+            - SYS_ADMIN
+          privileged: true
+        volumeMounts:
+        - mountPath: /mnt
+          mountPropagation: Bidirectional
+          name: web-data
+      restartPolicy: Always
+      volumes:
+      - emptyDir: {}
+        name: web-data
 ```
