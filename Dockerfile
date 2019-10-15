@@ -27,7 +27,7 @@ FROM ubuntu:bionic
 
 RUN apt-get update && apt-get dist-upgrade -y
 
-RUN apt-get install -y --no-install-recommends ca-certificates wget gnupg \
+RUN apt-get install -y --no-install-recommends ca-certificates wget gnupg psmisc \
   && echo "deb http://packages.cloud.google.com/apt gcsfuse-bionic main" | tee /etc/apt/sources.list.d/gcsfuse.list \
   && wget -qO- https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
   && apt-get update && apt-get install -y --no-install-recommends gcsfuse
