@@ -29,7 +29,8 @@ RUN apt-get update && apt-get dist-upgrade -y
 
 ADD gcsfuse_0.28.3_amd64.deb /root/gcsfuse_0.28.3_amd64.deb
 
-RUN apt-get install -y --no-install-recommends ca-certificates wget gnupg fuse
+RUN apt-get install -y --no-install-recommends ca-certificates wget gnupg fuse && \
+    dpkg -i /root/gcsfuse_0.28.3_amd64.deb
 
 RUN rm -f /root/gcsfuse_0.28.3_amd64.deb
 
