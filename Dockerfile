@@ -27,9 +27,10 @@ FROM ubuntu:bionic
 
 RUN apt-get update && apt-get dist-upgrade -y
 
-RUN apt-get install -y --no-install-recommends ca-certificates wget gnupg \
-  && echo "deb http://packages.cloud.google.com/apt gcsfuse-bionic main" | tee /etc/apt/sources.list.d/gcsfuse.list \
-  && wget -qO- https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - \
-  && apt-get update && apt-get install -y --no-install-recommends gcsfuse
-  
+ADD gcsfuse_0.28.3_amd64.deb /root/gcsfuse_0.28.3_amd64.deb
+
+RUN apt-get install -y --no-install-recommends ca-certificates wget gnupg fuse
+
+RUN rm -f /root/gcsfuse_0.28.3_amd64.deb
+
 RUN apt-get clean && rm -rf /var/lib/apt/lists
