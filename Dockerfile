@@ -23,15 +23,15 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 
-FROM ubuntu:bionic
+FROM ubuntu:22.04
 
 RUN apt-get update && apt-get dist-upgrade -y
 
-ADD gcsfuse_0.28.4_amd64.deb /root/gcsfuse_0.28.4_amd64.deb
+ADD gcsfuse_0.41.8_amd64.deb /root/gcsfuse_0.41.8_amd64.deb
 
 RUN apt-get install -y --no-install-recommends ca-certificates wget gnupg fuse && \
-    dpkg -i /root/gcsfuse_0.28.4_amd64.deb
+    dpkg -i /root/gcsfuse_0.41.8_amd64.deb
 
-RUN rm -f /root/gcsfuse_0.28.4_amd64.deb
+RUN rm -f /root/gcsfuse_0.41.8_amd64.deb
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists
